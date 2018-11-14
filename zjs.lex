@@ -1,28 +1,28 @@
 %{
 #include <stdio.h>
-void printLexeme();
-int lineNum = 1;
+#include "zjs.tab.h"
+void printError();
 %}
 
-%%
-
-(END) { printf("END\t"); printLexeme();}
-\; { printf("END_STATEMENT\t"); printLexeme();}
-(POINT) { printf("POINT\t"); printLexeme(); }
-(LINE) { printf("LINE\t"); printLexeme(); }
-(CIRCLE) { printf("CIRCLE\t"); printLexeme(); }
-(RECTANGLE) { printf("RECTANGLE\t"); printLexeme(); }
-(SET_COLOR) { printf("SET_COLOR\t"); printLexeme(); }
-[0-9]+ { printf("INT"); printLexeme(); }
-[0-9]+?\.[0-9]+? { printf("FLOAT"); printLexeme(); }
-[ \t]+ ;
-(\n) { lineNum++; }
-. {printf("USER MESSED UP AT LINE %d", lineNum); 
-	printLexeme(); } 
+%option nounput yylineno
 
 %%
 
-void printLexeme(){
-printf("(%s)\n"
-, yytext);
+point { return POINT;  }
+line { return LINE;  }
+circle { return CIRCLE; }
+rectangle {return RECTANGLE; }
+set_color {return SET_COLOR;  }
+[0-9]+ {yylval.iVal = atoi(yytext);return INT; }
+[0-9]+?\.[0-9]+? { return FLOAT;  }
+"end;" { return END; }
+";" { return END_STATEMENT; }
+[ |\t|\r|\n]+ ;
+.		{printError();}
+
+%%
+
+void printError(){
+printf("ERROR: %s on line %d\n"
+, yytext, yylineno);
 }
