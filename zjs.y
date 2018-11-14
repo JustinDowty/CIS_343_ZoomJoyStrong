@@ -33,20 +33,23 @@ program:	statement_list END
 statement_list:	  statement
 		| statement_list statement
 		;
-												// Line checks x and y of each point
-statement:	LINE INT INT INT INT END_STATEMENT { 
-							if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($4)&&checkYBounds($5)){ 
-                                                      		line($2, $3, $4,$5); } else { printf("LINE ERROR\n"); } }
-												// Point checks x and y
+						    // Line checks x and y of each point
+statement:	LINE INT INT INT INT END_STATEMENT { if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($4)&&checkYBounds($5)){ 
+                                                      	line($2, $3, $4,$5); } else { printf("LINE ERROR\n"); } }
+
+						     // Point checks x and y
 		|	POINT INT INT END_STATEMENT { if(checkXBounds($2)&&checkYBounds($3)){ 
 								point($2, $2); } else { printf("POINT ERROR\n"); } }
-												// Circle checks outer points of circle
+
+							  // Circle checks outer points of circle
 		|	CIRCLE INT INT INT END_STATEMENT { if(checkXBounds($2+$4)&& checkYBounds($3+$4)&&checkXBounds($2-$4)&&checkYBounds($3-$4)){ 
                                                       		circle($2, $3, $4); } else { printf("CIRCLE ERROR\n"); } }
-												// Rectangle checks x and y as well as x + width and y + height
+
+								 // Rectangle checks x and y as well as x + width and y + height
 		|	RECTANGLE INT INT INT INT END_STATEMENT{ if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($2+$4)&&checkYBounds($3+$5)){ 
                                                      		rectangle($2, $3, $4,$5); }else { printf("RECTANGLE ERROR\n"); } }
 
+								 // Color checks for values 0 - 255
 		|	SET_COLOR INT INT INT END_STATEMENT { if(colorErrorCheck($2, $3, $4)){ set_color($2, $3, $4); } }
 		;
 %%
