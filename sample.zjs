@@ -8442,5 +8442,5 @@ point 90 419;
 set_color 47 136 42;
 point 1007 164;
 set_color 216 101 165;
-point 216 371; 
+point 216 371;
 end;

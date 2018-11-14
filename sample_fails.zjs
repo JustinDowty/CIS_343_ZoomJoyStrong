@@ -1,0 +1,22 @@
+set_color 100 101 164;
+point 623 672;
+
+rectangle 1040 0 1021 765;
+set_color 300 101 164;
+circle 1512 384 50;
+line 1512 384 1023 767;
+point 1623 672;
+
+rectangle 0 1040 1021 765;
+set_color 0 301 164;
+circle 512 1384 50;
+line 512 1384 1023 767;
+point 623 1672;
+
+circle 1023 384 50;
+circle 512 767 50;
+
+rectangle 0 0 1051 765;
+rectangle 0 0 51 1765;
+
+end;

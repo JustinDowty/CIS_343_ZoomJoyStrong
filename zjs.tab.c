@@ -68,8 +68,11 @@
 	#include "zjs.h"
 	int yyerror(const char* err);
 	int colorErrorCheck(int a, int b, int c);
+	int checkXBounds(int x);
+	int checkYBounds(int y);
+	int yylineno;
 
-#line 73 "zjs.tab.c" /* yacc.c:339  */
+#line 76 "zjs.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -121,13 +124,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 8 "zjs.y" /* yacc.c:355  */
+#line 11 "zjs.y" /* yacc.c:355  */
 
   int iVal;
   float fVal;
   char* sval;
 
-#line 131 "zjs.tab.c" /* yacc.c:355  */
+#line 134 "zjs.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -144,7 +147,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 148 "zjs.tab.c" /* yacc.c:358  */
+#line 151 "zjs.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -442,7 +445,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    26,    26,    29,    30,    33,    34,    35,    36,    37
+       0,    30,    30,    33,    34,    37,    41,    44,    48,    53
 };
 #endif
 
@@ -1226,37 +1229,45 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 33 "zjs.y" /* yacc.c:1648  */
-    { line((yyvsp[-4].iVal), (yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal)); }
-#line 1232 "zjs.tab.c" /* yacc.c:1648  */
+#line 37 "zjs.y" /* yacc.c:1648  */
+    { if(checkXBounds((yyvsp[-4].iVal))&&checkYBounds((yyvsp[-3].iVal))&&checkXBounds((yyvsp[-2].iVal))&&checkYBounds((yyvsp[-1].iVal))){ 
+                                                      line((yyvsp[-4].iVal), (yyvsp[-3].iVal), (yyvsp[-2].iVal),(yyvsp[-1].iVal)); } 
+												else { printf("LINE ERROR\n"); } }
+#line 1237 "zjs.tab.c" /* yacc.c:1648  */
     break;
 
   case 6:
-#line 34 "zjs.y" /* yacc.c:1648  */
-    { point((yyvsp[-2].iVal), (yyvsp[-1].iVal)); }
-#line 1238 "zjs.tab.c" /* yacc.c:1648  */
-    break;
-
-  case 7:
-#line 35 "zjs.y" /* yacc.c:1648  */
-    { circle((yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal)); }
+#line 41 "zjs.y" /* yacc.c:1648  */
+    { if(checkXBounds((yyvsp[-2].iVal))&&checkYBounds((yyvsp[-1].iVal))){ point((yyvsp[-2].iVal), (yyvsp[-2].iVal)); } 
+										  else { printf("POINT ERROR\n"); } }
 #line 1244 "zjs.tab.c" /* yacc.c:1648  */
     break;
 
+  case 7:
+#line 44 "zjs.y" /* yacc.c:1648  */
+    { if(checkXBounds((yyvsp[-3].iVal)+(yyvsp[-1].iVal))&& checkYBounds((yyvsp[-2].iVal)+(yyvsp[-1].iVal))&&checkXBounds((yyvsp[-3].iVal)-(yyvsp[-1].iVal))&&checkYBounds((yyvsp[-2].iVal)-(yyvsp[-1].iVal))){ 
+                                                      circle((yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal)); }
+												else { printf("CIRCLE ERROR\n"); } }
+#line 1252 "zjs.tab.c" /* yacc.c:1648  */
+    break;
+
   case 8:
-#line 36 "zjs.y" /* yacc.c:1648  */
-    { rectangle((yyvsp[-4].iVal), (yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal)); }
-#line 1250 "zjs.tab.c" /* yacc.c:1648  */
+#line 48 "zjs.y" /* yacc.c:1648  */
+    { if(checkXBounds((yyvsp[-4].iVal))&&checkYBounds((yyvsp[-3].iVal))&&checkXBounds((yyvsp[-4].iVal)+(yyvsp[-2].iVal))&&
+															checkYBounds((yyvsp[-3].iVal)+(yyvsp[-1].iVal))){ 
+                                                      rectangle((yyvsp[-4].iVal), (yyvsp[-3].iVal), (yyvsp[-2].iVal),(yyvsp[-1].iVal)); 
+													}else { printf("RECTANGLE ERROR\n"); } }
+#line 1261 "zjs.tab.c" /* yacc.c:1648  */
     break;
 
   case 9:
-#line 37 "zjs.y" /* yacc.c:1648  */
+#line 53 "zjs.y" /* yacc.c:1648  */
     { if(colorErrorCheck((yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal))){ set_color((yyvsp[-3].iVal), (yyvsp[-2].iVal), (yyvsp[-1].iVal)); } }
-#line 1256 "zjs.tab.c" /* yacc.c:1648  */
+#line 1267 "zjs.tab.c" /* yacc.c:1648  */
     break;
 
 
-#line 1260 "zjs.tab.c" /* yacc.c:1648  */
+#line 1271 "zjs.tab.c" /* yacc.c:1648  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1484,7 +1495,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 39 "zjs.y" /* yacc.c:1907  */
+#line 55 "zjs.y" /* yacc.c:1907  */
 
 
 int main(int argc, char** argv){
@@ -1497,9 +1508,30 @@ int yyerror(const char* err){
 	printf("%s\n", err);
 }
 
+// Checks to make sure color is within range 0 - 255
 int colorErrorCheck(int a, int b, int c){
 	if(a > 255 || a < 0 || b > 255 || b < 0 || c > 255 || c < 0){
-		printf("COLOR VALUE ERROR\n");
+		printf("COLOR VALUE ON LINE %d ", yylineno);
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+// Checks to make sure x values are within bounds, uses width declared in zjs.h
+int checkXBounds(int x){
+	if(x < 0 || x > WIDTH){
+		printf("X OUT OF BOUNDS ERROR ON LINE %d ", yylineno);
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+// Checks to make sure y values are within bounds, uses height declared in zjs.h
+int checkYBounds(int y){
+	if(y < 0 || y > HEIGHT){
+		printf("Y OUT OF BOUNDS ERROR ON LINE %d ", yylineno);
 		return 0;
 	} else {
 		return 1;

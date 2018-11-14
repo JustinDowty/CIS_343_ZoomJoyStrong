@@ -62,7 +62,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 8 "zjs.y" /* yacc.c:1910  */
+#line 11 "zjs.y" /* yacc.c:1910  */
 
   int iVal;
   float fVal;
