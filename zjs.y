@@ -34,21 +34,18 @@ statement_list:	  statement
 		| statement_list statement
 		;
 												// Line checks x and y of each point
-statement:	LINE INT INT INT INT END_STATEMENT { if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($4)&&checkYBounds($5)){ 
-                                                      line($2, $3, $4,$5); } 
-												else { printf("LINE ERROR\n"); } }
+statement:	LINE INT INT INT INT END_STATEMENT { 
+							if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($4)&&checkYBounds($5)){ 
+                                                      		line($2, $3, $4,$5); } else { printf("LINE ERROR\n"); } }
 												// Point checks x and y
-		|	POINT INT INT END_STATEMENT { if(checkXBounds($2)&&checkYBounds($3)){ point($2, $2); } 
-										  else { printf("POINT ERROR\n"); } }
+		|	POINT INT INT END_STATEMENT { if(checkXBounds($2)&&checkYBounds($3)){ 
+								point($2, $2); } else { printf("POINT ERROR\n"); } }
 												// Circle checks outer points of circle
 		|	CIRCLE INT INT INT END_STATEMENT { if(checkXBounds($2+$4)&& checkYBounds($3+$4)&&checkXBounds($2-$4)&&checkYBounds($3-$4)){ 
-                                                      circle($2, $3, $4); }
-												else { printf("CIRCLE ERROR\n"); } }
+                                                      		circle($2, $3, $4); } else { printf("CIRCLE ERROR\n"); } }
 												// Rectangle checks x and y as well as x + width and y + height
-		|	RECTANGLE INT INT INT INT END_STATEMENT{ if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($2+$4)&&
-															checkYBounds($3+$5)){ 
-                                                      rectangle($2, $3, $4,$5); 
-													}else { printf("RECTANGLE ERROR\n"); } }
+		|	RECTANGLE INT INT INT INT END_STATEMENT{ if(checkXBounds($2)&&checkYBounds($3)&&checkXBounds($2+$4)&&checkYBounds($3+$5)){ 
+                                                     		rectangle($2, $3, $4,$5); }else { printf("RECTANGLE ERROR\n"); } }
 
 		|	SET_COLOR INT INT INT END_STATEMENT { if(colorErrorCheck($2, $3, $4)){ set_color($2, $3, $4); } }
 		;
@@ -67,7 +64,7 @@ int yyerror(const char* err){
 // Checks to make sure color is within range 0 - 255
 int colorErrorCheck(int a, int b, int c){
 	if(a > 255 || a < 0 || b > 255 || b < 0 || c > 255 || c < 0){
-		printf("COLOR VALUE ON LINE %d ", yylineno);
+		printf("COLOR VALUE ON LINE %d\n", yylineno);
 		return 0;
 	} else {
 		return 1;
